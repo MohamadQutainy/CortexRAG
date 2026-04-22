@@ -100,6 +100,7 @@ Many RAG repositories are useful as demos but become difficult to extend, evalua
 │   └──────────────────────┘        └──────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────────┘
 ```
+<img width="1472" height="1560" alt="image" src="https://github.com/user-attachments/assets/1c3e0319-05cb-442f-8fa1-4a9e541e8c7a" />
 
 The two runtime paths **Ingestion** and **Query** are fully decoupled. Ingestion runs once (or on data updates) and writes to the vector store. The Query path reads from it at inference time. Both paths share the same config and pipeline orchestrator, ensuring consistency.
 
