@@ -61,46 +61,10 @@ Many RAG repositories are useful as demos but become difficult to extend, evalua
 
 ## 2. System Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         CortexRAG Framework                          │
-│                                                                     │
-│  ┌──────────────┐     ┌──────────────────────────────────────────┐  │
-│  │  config.yaml │────▶│  config.py  (Factory + Loader)           │  │
-│  └──────────────┘     └──────────────────┬───────────────────────┘  │
-│                                          │                           │
-│              ┌───────────────────────────▼──────────────────────┐   │
-│              │               rag/pipeline.py                     │   │
-│              │           build_generator()                       │   │
-│              └───┬─────────────┬──────────────┬─────────────────┘   │
-│                  │             │              │                      │
-│         ┌────────▼──┐  ┌───────▼──────┐  ┌───▼──────────┐          │
-│         │ Ingestion │  │   Retrieval  │  │  Generation  │          │
-│         │  Flow     │  │   + Rerank   │  │  + Prompts   │          │
-│         └────┬──────┘  └──────┬───────┘  └──────┬───────┘          │
-│              │                │                  │                  │
-│   ┌──────────▼──┐    ┌────────▼────────┐  ┌──────▼──────────────┐  │
-│   │  Chunking   │    │  Vector / BM25  │  │  Query Rewriter /   │  │
-│   │  Embeddings │    │  Hybrid (RRF)   │  │  Query Expander     │  │
-│   │  VectorStore│    │  Cross-Encoder  │  │  LLM Generator      │  │
-│   └─────────────┘    └─────────────────┘  └─────────────────────┘  │
-│                                                                     │
-│   ┌─────────────────────────────────────────────────────────────┐   │
-│   │  Advanced Modules: Graph RAG │ Hierarchical RAG │ Agentic   │   │
-│   └─────────────────────────────────────────────────────────────┘   │
-│                                                                     │
-│   ┌─────────────────────────────────────────────────────────────┐   │
-│   │  Evaluation: Retrieval Metrics │ LLM Judge │ Semantic Sim.  │   │
-│   └─────────────────────────────────────────────────────────────┘   │
-│                                                                     │
-│   ┌──────────────────────┐        ┌──────────────────────────────┐  │
-│   │  main.py  (CLI)      │        │  app.py  (Gradio UI)         │  │
-│   │  ingest / query /    │        │  Interactive chat + context  │  │
-│   │  evaluate            │        │  source viewer               │  │
-│   └──────────────────────┘        └──────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────────┘
-```
+
 <img width="1472" height="1560" alt="image" src="https://github.com/user-attachments/assets/1c3e0319-05cb-442f-8fa1-4a9e541e8c7a" />
+
+
 
 The two runtime paths **Ingestion** and **Query** are fully decoupled. Ingestion runs once (or on data updates) and writes to the vector store. The Query path reads from it at inference time. Both paths share the same config and pipeline orchestrator, ensuring consistency.
 
