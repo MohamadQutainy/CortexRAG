@@ -1,0 +1,31 @@
+# ============================================================================
+# — Core Dependencies
+# ============================================================================
+pyyaml>=6.0                    
+python-dotenv>=1.0.0           
+pydantic>=2.0                  
+
+
+litellm>=1.0                   
+openai>=1.0                    
+tenacity>=8.0                  
+
+
+chromadb>=0.4.0                
+
+rank_bm25>=0.2.2               
+
+
+gradio>=4.0                    
+tqdm>=4.0                      
+
+# ============================================================================
+#  — Optional Dependencies
+# ============================================================================
+# Remove the comment (#) from any package you need !! 
+
+# sentence-transformers>=2.0   # HuggingFace embeddings + Cross-Encoder reranking
+
+# faiss-cpu>=1.7                # FAISS — بحث سريع محلي
+# pinecone-client>=3.0          # Pinecone — سحابي
+# pymilvus>=2.3                 # Milvus — للبيانات الضخمة

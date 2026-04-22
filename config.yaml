@@ -1,0 +1,80 @@
+project:
+  name: "RAG Framework"
+  knowledge_base_path: "knowledge-base"   
+  vector_db_path: "vector_db"              
+  collection_name: "docs"                  
+
+
+llm:
+  model_name: "gpt-4o-mini"
+  temperature: 0.0
+  max_retries: 3                  # Number of reconnection attempts in case of request failure.
+  retry_min_wait: 10    #   (Exponential Backoff) If you fail the first time, wait 10 seconds before trying again.
+  retry_max_wait: 240   #   (Exponential Backoff) Maximum allowed waiting time between attempts.
+
+
+embeddings:
+  provider: "openai"                        # "openai" | "sentence_transformer"
+  model_name: "text-embedding-3-large"      
+  # sentence_transformer_device: "cpu"      
+
+chunking:
+  strategy: "recursive"  
+  #strategy: "semantic"          # "semantic" | "recursive"
+  average_chunk_size: 200       
+  recursive_chunk_size: 4000     
+  recursive_chunk_overlap: 0  
+  workers: 3                   
+
+
+vector_store:
+  provider: "chroma"            # "chroma" | "faiss" | "pinecone" | "milvus"
+
+
+retrieval:
+  #strategy: "vector"
+  strategy: "hybrid"            # "vector" | "bm25" | "hybrid"
+  top_k: 30                     
+  final_k: 10                   
+  hybrid_alpha: 0.4             
+  enable_query_rewriting: false  
+  enable_query_expansion: false 
+  expansion_count: 2            
+
+
+reranking:
+  strategy: "cross_encoder"               # "llm" | "cross_encoder" | "none"
+  # cross_encoder_model: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+
+
+cache:
+  enabled: true
+  directory: ".cache"             
+  cache_embeddings: true          
+  cache_llm_responses: true       
+  ttl_hours: 24                   
+
+
+observability:
+  log_level: "WARNING"            # "DEBUG" | "INFO" | "WARNING" | "ERROR"
+  log_file: "rag_system.log"      
+  enable_timing: false            
+
+evaluation:
+  test_file: "knowledge-base/real_estate_dataset/evaluation/qa_eval.jsonl"
+  judge_model: "gpt-4o-mini"   
+  retrieval_k: 10                       
+
+
+prompts:
+  company_name: "Sham Real Estate"
+  system_prompt: |
+    You are a knowledgeable, friendly assistant representing the company {company_name}.
+    You are chatting with a user about {company_name}.
+    Your answer will be evaluated for accuracy, relevance and completeness,
+    so make sure it only answers the question and fully answers it.
+    If you don't know the answer, say no.
+    For context, here are specific extracts from the Knowledge Base that might be directly relevant:
+    {context}
+
+    With this context, please answer the user's question. Be accurate, relevant and complete.
